@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VA Marketplace — Vind de Perfecte Virtuele Assistent</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a2e; background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* Utility */
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  .badge { display: inline-block; background: #f0f0f5; color: #6b6b80; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 100px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* Nav */
+  nav { padding: 18px 0; border-bottom: 1px solid #eee; background: #fff; position: sticky; top: 0; z-index: 100; }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-size: 20px; font-weight: 800; color: #1a1a2e; text-decoration: none; }
+  .logo span { color: #6c63ff; }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { text-decoration: none; color: #6b6b80; font-size: 14px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: #1a1a2e; }
+  .nav-cta { background: #1a1a2e; color: #fff !important; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: background .2s; }
+  .nav-cta:hover { background: #2d2d4a; }
+
+  /* Hero */
+  .hero { padding: 100px 0 80px; background: linear-gradient(180deg, #fafafe 0%, #fff 100%); }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: #1a1a2e; margin-bottom: 20px; }
+  .hero h1 span { background: linear-gradient(135deg, #6c63ff, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { font-size: 18px; color: #6b6b80; line-height: 1.7; margin-bottom: 32px; max-width: 480px; }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: #1a1a2e; color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all .2s; border: none; cursor: pointer; }
+  .btn-primary:hover { background: #2d2d4a; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #1a1a2e; padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; border: 1.5px solid #e0e0e8; transition: all .2s; }
+  .btn-secondary:hover { border-color: #1a1a2e; transform: translateY(-1px); }
+  .hero-visual { background: linear-gradient(135deg, #f5f5ff, #eef0ff); border-radius: 20px; padding: 40px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e8e8f0; }
+  .hero-card { background: #fff; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .hero-card .avatar { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .hero-card .info { flex: 1; }
+  .hero-card .name { font-weight: 600; font-size: 14px; }
+  .hero-card .role { font-size: 13px; color: #6b6b80; }
+  .hero-card .rate { font-weight: 700; font-size: 14px; color: #6c63ff; }
+  .stat-row { display: flex; gap: 40px; margin-top: 40px; }
+  .stat-item .num { font-size: 28px; font-weight: 800; color: #1a1a2e; }
+  .stat-item .label { font-size: 13px; color: #6b6b80; }
+
+  /* Social Proof */
+  .social-proof { padding: 40px 0; border-bottom: 1px solid #eee; }
+  .social-proof p { text-align: center; font-size: 13px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 20px; }
+  .logos { display: flex; justify-content: center; gap: 48px; align-items: center; opacity: .4; }
+  .logos span { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+
+  /* How it works */
+  .how-it-works { padding: 100px 0; }
+  .section-header { text-align: center; margin-bottom: 60px; }
+  .section-header h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 12px; }
+  .section-header p { font-size: 16px; color: #6b6b80; max-width: 500px; margin: 0 auto; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .step { text-align: center; padding: 40px 28px; border-radius: 16px; border: 1px solid #eee; transition: all .3s; position: relative; }
+  .step:hover { border-color: #ddd; box-shadow: 0 8px 30px rgba(0,0,0,.06); }
+  .step-num { width: 48px; height: 48px; border-radius: 12px; background: #f5f5ff; color: #6c63ff; font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .step p { font-size: 14px; color: #6b6b80; line-height: 1.7; }
+
+  /* Categories */
+  .categories { padding: 80px 0; background: #fafafe; }
+  .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cat-card { background: #fff; border-radius: 14px; padding: 28px 20px; text-align: center; border: 1px solid #eee; transition: all .3s; cursor: pointer; }
+  .cat-card:hover { border-color: #6c63ff; box-shadow: 0 4px 20px rgba(108,99,255,.1); transform: translateY(-2px); }
+  .cat-card .icon { font-size: 32px; margin-bottom: 12px; }
+  .cat-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .cat-card span { font-size: 13px; color: #6b6b80; }
+
+  /* Featured VAs */
+  .featured { padding: 100px 0; }
+  .va-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .va-card { border-radius: 16px; border: 1px solid #eee; overflow: hidden; transition: all .3s; }
+  .va-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,.08); transform: translateY(-3px); }
+  .va-header { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 64px; }
+  .va-body { padding: 20px; }
+  .va-body h4 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .va-body .role { font-size: 13px; color: #6b6b80; margin-bottom: 12px; }
+  .va-body .meta { display: flex; justify-content: space-between; align-items: center; }
+  .va-body .rating { font-size: 13px; font-weight: 600; color: #f59e0b; }
+  .va-body .price { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+
+  /* CTA */
+  .final-cta { padding: 100px 0; background: linear-gradient(135deg, #1a1a2e, #2d2d5e); text-align: center; color: #fff; }
+  .final-cta h2 { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+  .final-cta p { font-size: 17px; opacity: .7; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .final-cta .btn-primary { background: #6c63ff; }
+  .final-cta .btn-primary:hover { background: #5b52e0; }
+  .final-cta .btn-secondary { border-color: rgba(255,255,255,.3); color: #fff; }
+  .final-cta .btn-secondary:hover { border-color: #fff; }
+  .cta-btns { display: flex; gap: 12px; justify-content: center; }
+
+  /* Footer */
+  footer { padding: 40px 0; border-top: 1px solid #eee; text-align: center; font-size: 13px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#" class="logo">VA<span>Marketplace</span></a>
+    <div class="nav-links">
+      <a href="#">Categorieën</a>
+      <a href="#">Hoe het werkt</a>
+      <a href="#">Tarieven</a>
+      <a href="#">Over ons</a>
+      <a href="#" class="nav-cta">Aan de slag</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="badge">Nieuw: 500+ geverifieerde VA's</div>
+        <h1 style="margin-top:16px;">Vind jouw perfecte <span>virtuele assistent</span></h1>
+        <p>Bespaar tijd en schaal je bedrijf op met bewezen virtuele assistenten. Binnen 24 uur gematcht met de juiste professional.</p>
+        <div class="hero-btns">
+          <a href="#" class="btn-primary">Vind een VA &rarr;</a>
+          <a href="#" class="btn-secondary">Word VA</a>
+        </div>
+        <div class="stat-row">
+          <div class="stat-item"><div class="num">500+</div><div class="label">Actieve VA's</div></div>
+          <div class="stat-item"><div class="num">2.400+</div><div class="label">Projecten</div></div>
+          <div class="stat-item"><div class="num">4.9/5</div><div class="label">Beoordeling</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="avatar" style="background:#e8f5e9;">🧑‍💼</div>
+          <div class="info"><div class="name">Lisa de Vries</div><div class="role">Administratie & Planning</div></div>
+          <div class="rate">€22/u</div>
+        </div>
+        <div class="hero-card">
+          <div class="avatar" style="background:#fff3e0;">📊</div>
+          <div class="info"><div class="name">Mark Jansen</div><div class="role">Boekhouding & Facturatie</div></div>
+          <div class="rate">€28/u</div>
+        </div>
+        <div class="hero-card">
+          <div class="avatar" style="background:#e3f2fd;">📱</div>
+          <div class="info"><div class="name">Sophie Bakker</div><div class="role">Social Media Management</div></div>
+          <div class="rate">€25/u</div>
+        </div>
+        <div class="hero-card">
+          <div class="avatar" style="background:#fce4ec;">🎨</div>
+          <div class="info"><div class="name">Daan Willems</div><div class="role">Grafisch Ontwerp</div></div>
+          <div class="rate">€30/u</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="social-proof">
+  <div class="container">
+    <p>Vertrouwd door 200+ bedrijven in Nederland</p>
+    <div class="logos">
+      <span>Coolblue</span><span>Bol.com</span><span>Fonq</span><span>Picnic</span><span>Swapfiets</span><span>Bux</span>
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:16px;">Hoe het werkt</div>
+      <h2>In 3 stappen aan de slag</h2>
+      <p>Van aanmelding tot samenwerking in minder dan 24 uur.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Beschrijf je behoefte</h3>
+        <p>Vertel ons wat je nodig hebt. Administratie, social media, boekhouding — wij luisteren.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Ontvang een match</h3>
+        <p>Ons algoritme selecteert de beste VA's op basis van skills, beschikbaarheid en reviews.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Start de samenwerking</h3>
+        <p>Werk direct samen via ons platform. Betaal per uur of per project, altijd transparant.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="categories">
+  <div class="container">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:16px;">Categorieën</div>
+      <h2>Expertise voor elke behoefte</h2>
+      <p>Onze VA's dekken een breed scala aan vaardigheden.</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card"><div class="icon">📋</div><h4>Administratie</h4><span>120+ VA's</span></div>
+      <div class="cat-card"><div class="icon">💰</div><h4>Financiën</h4><span>85+ VA's</span></div>
+      <div class="cat-card"><div class="icon">📱</div><h4>Social Media</h4><span>95+ VA's</span></div>
+      <div class="cat-card"><div class="icon">🎨</div><h4>Design</h4><span>60+ VA's</span></div>
+      <div class="cat-card"><div class="icon">📧</div><h4>E-mail & Planning</h4><span>110+ VA's</span></div>
+      <div class="cat-card"><div class="icon">🔍</div><h4>Research</h4><span>45+ VA's</span></div>
+      <div class="cat-card"><div class="icon">💬</div><h4>Klantenservice</h4><span>75+ VA's</span></div>
+      <div class="cat-card"><div class="icon">📈</div><h4>Marketing</h4><span>70+ VA's</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="container">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:16px;">Top VA's</div>
+      <h2>Uitgelichte professionals</h2>
+      <p>Onze best beoordeelde virtuele assistenten.</p>
+    </div>
+    <div class="va-grid">
+      <div class="va-card">
+        <div class="va-header" style="background: linear-gradient(135deg,#e8f5e9,#c8e6c9);">👩‍💻</div>
+        <div class="va-body">
+          <h4>Emma van Dijk</h4>
+          <div class="role">Administratie & CRM</div>
+          <div class="meta"><span class="rating">★ 4.9 (127)</span><span class="price">€24/u</span></div>
+        </div>
+      </div>
+      <div class="va-card">
+        <div class="va-header" style="background: linear-gradient(135deg,#e3f2fd,#bbdefb);">👨‍💼</div>
+        <div class="va-body">
+          <h4>Thomas Smit</h4>
+          <div class="role">Boekhouding & BTW</div>
+          <div class="meta"><span class="rating">★ 4.8 (98)</span><span class="price">€28/u</span></div>
+        </div>
+      </div>
+      <div class="va-card">
+        <div class="va-header" style="background: linear-gradient(135deg,#fff3e0,#ffe0b2);">👩‍🎨</div>
+        <div class="va-body">
+          <h4>Fleur Hendriks</h4>
+          <div class="role">Social Media & Content</div>
+          <div class="meta"><span class="rating">★ 5.0 (84)</span><span class="price">€26/u</span></div>
+        </div>
+      </div>
+      <div class="va-card">
+        <div class="va-header" style="background: linear-gradient(135deg,#fce4ec,#f8bbd0);">👨‍🔧</div>
+        <div class="va-body">
+          <h4>Bas Mulder</h4>
+          <div class="role">Technisch & IT Support</div>
+          <div class="meta"><span class="rating">★ 4.9 (63)</span><span class="price">€32/u</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <h2>Klaar om te groeien?</h2>
+    <p>Sluit je aan bij 200+ bedrijven die hun werk slimmer organiseren met een virtuele assistent.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary">Vind een VA &rarr;</a>
+      <a href="#" class="btn-secondary">Gratis consult plannen</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 VA Marketplace &mdash; marketplace.raivenclaw.com &mdash; Alle rechten voorbehouden.</p>
+  </div>
+</footer>
+
+</body>
+</html>
