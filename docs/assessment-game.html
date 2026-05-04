@@ -836,18 +836,23 @@ const scenarios3 = [
 
 // ===== SCREEN TRANSITIONS =====
 function showScreen(id) {
+  // Hide all screens
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.remove('visible');
-    setTimeout(() => s.classList.remove('active'), 400);
   });
+  // After fade-out, swap active screen
   setTimeout(() => {
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+    });
     const el = document.getElementById(id);
     el.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'instant' });
+    // Trigger fade-in on next frame
     requestAnimationFrame(() => {
       requestAnimationFrame(() => el.classList.add('visible'));
     });
-  }, 300);
+  }, 450);
 }
 
 function updateProgress(round) {
