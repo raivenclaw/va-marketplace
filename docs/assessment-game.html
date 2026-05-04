@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De Eerste Werkdag — VA Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #4f46e5;
+  --primary-light: #818cf8;
+  --primary-dark: #3730a3;
+  --primary-bg: #eef2ff;
+  --green: #059669;
+  --green-bg: #ecfdf5;
+  --yellow: #d97706;
+  --yellow-bg: #fffbeb;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+  --shadow-xl: 0 20px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === SCREEN CONTAINER === */
+.screen {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+.screen.active {
+  display: block;
+}
+.screen.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === PROGRESS BAR === */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0;
+  display: none;
+}
+.progress-bar.visible { display: block; }
+.progress-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+}
+.progress-steps {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.progress-step {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--gray-200);
+  transition: background 0.4s ease;
+}
+.progress-step.done { background: var(--primary); }
+.progress-step.current { background: var(--primary-light); }
+.progress-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+
+/* === TIMER === */
+.timer-bar {
+  position: fixed;
+  top: 49px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+  display: none;
+}
+.timer-bar.visible { display: block; }
+.timer-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+.timer-display {
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-800);
+  transition: color 0.3s;
+}
+.timer-display.warning { color: var(--red); }
+.timer-track {
+  flex: 1;
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  margin-left: 16px;
+  overflow: hidden;
+}
+.timer-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: width 1s linear, background 0.3s;
+}
+.timer-fill.warning { background: var(--red); }
+
+/* === INTRO === */
+.intro-hero {
+  text-align: center;
+  padding: 80px 0 40px;
+}
+.intro-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--primary-bg);
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin-bottom: 24px;
+}
+.intro-hero h1 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--gray-900);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.intro-hero .subtitle {
+  font-size: 18px;
+  color: var(--gray-500);
+  margin-bottom: 40px;
+}
+.intro-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+@media (max-width: 600px) {
+  .intro-cards { grid-template-columns: 1fr; }
+  .intro-hero h1 { font-size: 28px; }
+  .intro-hero { padding-top: 48px; }
+}
+.intro-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--gray-100);
+}
+.intro-card .num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.intro-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.intro-card p {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+.intro-meta {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 36px;
+  font-size: 14px;
+  color: var(--gray-500);
+}
+.intro-meta span { display: flex; align-items: center; gap: 6px; }
+
+/* === BUTTONS === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 1px 2px rgba(79,70,229,0.3);
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 4px 12px rgba(79,70,229,0.35);
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  background: white;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-300);
+}
+.btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+.btn-lg { padding: 16px 40px; font-size: 17px; }
+
+/* === ROUND HEADER === */
+.round-header {
+  padding-top: 110px;
+  margin-bottom: 24px;
+}
+.round-header .tag {
+  display: inline-block;
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.round-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+.round-header p {
+  font-size: 15px;
+  color: var(--gray-500);
+}
+
+/* === TASK CARDS (RONDE 1) === */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.task-card {
+  background: white;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: grab;
+  user-select: none;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  position: relative;
+}
+.task-card:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
+}
+.task-card.dragging {
+  opacity: 0.5;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.02);
+}
+.task-card.drag-over {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+}
+.task-rank {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  color: var(--gray-500);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
+}
+.task-card:nth-child(-n+3) .task-rank {
+  background: var(--primary-bg);
+  color: var(--primary);
+}
+.task-grip {
+  color: var(--gray-300);
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+}
+.task-body { flex: 1; min-width: 0; }
+.task-client {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 2px;
+}
+.task-desc {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 4px;
+}
+.task-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.task-deadline {
+  font-size: 12px;
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.task-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.tag-urgent { background: var(--red-bg); color: var(--red); }
+.tag-today { background: var(--yellow-bg); color: var(--yellow); }
+.tag-week { background: var(--gray-100); color: var(--gray-500); }
+
+/* === SCENARIO CARDS (RONDE 2 & 3) === */
+.scenario-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--gray-100);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+}
+.scenario-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.scenario-text {
+  font-size: 15px;
+  color: var(--gray-700);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary-light);
+}
+.option-list { display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  background: white;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.5;
+  width: 100%;
+}
+.option-btn:hover { border-color: var(--primary-light); background: var(--primary-bg); }
+.option-btn.selected {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+  color: var(--primary-dark);
+}
+.option-btn.correct {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: #065f46;
+}
+.option-btn.incorrect {
+  border-color: var(--red);
+  background: var(--red-bg);
+  color: #991b1b;
+}
+.option-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
+}
+.option-btn.selected .option-letter {
+  background: var(--primary);
+  color: white;
+}
+
+/* === RESULTS === */
+.results-hero {
+  text-align: center;
+  padding-top: 60px;
+  margin-bottom: 40px;
+}
+.results-hero h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.results-verdict {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+.verdict-green { background: var(--green-bg); color: var(--green); }
+.verdict-yellow { background: var(--yellow-bg); color: var(--yellow); }
+.verdict-red { background: var(--red-bg); color: var(--red); }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 600px) { .results-grid { grid-template-columns: 1fr; } }
+.result-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--gray-100);
+}
+.result-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.star {
+  font-size: 24px;
+  color: var(--gray-200);
+  transition: color 0.3s, transform 0.3s;
+}
+.star.filled { color: #f59e0b; }
+.star.animate {
+  animation: starPop 0.4s ease forwards;
+}
+@keyframes starPop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.result-card .score-label {
+  font-size: 14px;
+  color: var(--gray-500);
+}
+.result-card .score-val {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gray-900);
+}
+
+.results-detail {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--gray-100);
+  padding: 28px 24px;
+  margin-bottom: 32px;
+}
+.results-detail h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.feedback-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 14px;
+}
+.feedback-item:last-child { border-bottom: none; }
+.feedback-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.feedback-text { color: var(--gray-600); line-height: 1.5; }
+.feedback-text strong { color: var(--gray-800); }
+
+.results-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* === FOOTER NOTE === */
+.footer-note {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 12px;
+  color: var(--gray-400);
+}
+
+/* Touch / mobile drag improvements */
+@media (max-width: 600px) {
+  .task-card { padding: 14px 16px; gap: 10px; }
+  .scenario-card { padding: 20px 18px; }
+  .round-header h2 { font-size: 20px; }
+  .screen { padding: 16px 16px 48px; }
+}
+
+/* Time-up overlay */
+.time-up-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.time-up-overlay.visible { opacity: 1; }
+.time-up-box {
+  background: white;
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow-xl);
+  max-width: 400px;
+  width: 90%;
+}
+.time-up-box h3 { font-size: 20px; margin-bottom: 8px; }
+.time-up-box p { color: var(--gray-500); margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar">
+  <div class="progress-inner">
+    <div class="progress-steps">
+      <div class="progress-step" id="step1"></div>
+      <div class="progress-step" id="step2"></div>
+      <div class="progress-step" id="step3"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Ronde 1/3</div>
+  </div>
+</div>
+
+<!-- TIMER BAR -->
+<div class="timer-bar" id="timerBar">
+  <div class="timer-inner">
+    <div class="timer-display" id="timerDisplay">3:00</div>
+    <div class="timer-track">
+      <div class="timer-fill" id="timerFill" style="width:100%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: INTRO -->
+<div class="screen active" id="screenIntro">
+  <div class="intro-hero">
+    <div class="intro-icon">&#128188;</div>
+    <h1>De Eerste Werkdag</h1>
+    <p class="subtitle">Laat zien hoe jij werkt als virtuele assistent</p>
+  </div>
+  <div class="intro-cards">
+    <div class="intro-card">
+      <div class="num">1</div>
+      <h3>Inbox Triage</h3>
+      <p>Prioriteer 8 taken van verschillende klanten op volgorde van urgentie.</p>
+    </div>
+    <div class="intro-card">
+      <div class="num">2</div>
+      <h3>Conflicten</h3>
+      <p>Los lastige situaties op wanneer klanten tegelijkertijd om aandacht vragen.</p>
+    </div>
+    <div class="intro-card">
+      <div class="num">3</div>
+      <h3>Onverwacht</h3>
+      <p>Reageer snel en professioneel op onverwachte problemen.</p>
+    </div>
+  </div>
+  <div class="intro-meta">
+    <span>&#9202; ~10 minuten</span>
+    <span>&#127919; 3 rondes</span>
+    <span>&#128200; Directe feedback</span>
+  </div>
+  <div style="text-align:center">
+    <button class="btn btn-primary btn-lg" onclick="startGame()">Start Assessment &rarr;</button>
+  </div>
+  <p class="footer-note">Dit assessment meet je organisatievaardigheden, prioritering en communicatie.</p>
+</div>
+
+<!-- SCREEN: RONDE 1 -->
+<div class="screen" id="screenRound1">
+  <div class="round-header">
+    <span class="tag">Ronde 1 van 3</span>
+    <h2>Inbox Triage</h2>
+    <p>Sleep de taken in de juiste volgorde. De belangrijkste taak bovenaan.</p>
+  </div>
+  <div class="task-list" id="taskList"></div>
+  <div style="text-align:center">
+    <button class="btn btn-primary" onclick="submitRound1()">Volgorde bevestigen &rarr;</button>
+  </div>
+</div>
+
+<!-- SCREEN: RONDE 2 -->
+<div class="screen" id="screenRound2">
+  <div class="round-header">
+    <span class="tag">Ronde 2 van 3</span>
+    <h2>Conflicten</h2>
+    <p>Kies bij elk scenario de beste aanpak.</p>
+  </div>
+  <div id="scenarios2"></div>
+  <div style="text-align:center">
+    <button class="btn btn-primary" id="btnRound2" disabled onclick="submitRound2()">Antwoorden bevestigen &rarr;</button>
+  </div>
+</div>
+
+<!-- SCREEN: RONDE 3 -->
+<div class="screen" id="screenRound3">
+  <div class="round-header">
+    <span class="tag">Ronde 3 van 3</span>
+    <h2>Onverwacht</h2>
+    <p>Quick-fire! Reageer snel op onverwachte situaties.</p>
+  </div>
+  <div id="scenarios3"></div>
+  <div style="text-align:center">
+    <button class="btn btn-primary" id="btnRound3" disabled onclick="submitRound3()">Antwoorden bevestigen &rarr;</button>
+  </div>
+</div>
+
+<!-- SCREEN: RESULTS -->
+<div class="screen" id="screenResults">
+  <div class="results-hero">
+    <div class="intro-icon" style="font-size:40px">&#127942;</div>
+    <h2>Jouw Resultaten</h2>
+    <p style="color:var(--gray-500);margin-bottom:4px">Assessment afgerond</p>
+    <div class="results-verdict" id="verdictBadge"></div>
+  </div>
+  <div class="results-grid" id="resultsGrid"></div>
+  <div class="results-detail" id="resultsDetail"></div>
+  <div class="results-actions">
+    <button class="btn btn-primary" onclick="location.reload()">Opnieuw proberen</button>
+    <button class="btn btn-secondary" onclick="window.close()">Terug naar het platform</button>
+  </div>
+</div>
+
+<!-- TIME-UP OVERLAY -->
+<div class="time-up-overlay" id="timeUpOverlay">
+  <div class="time-up-box">
+    <h3>&#9200; Tijd is om!</h3>
+    <p>We nemen je huidige antwoorden mee.</p>
+    <button class="btn btn-primary" id="timeUpBtn">Verder &rarr;</button>
+  </div>
+</div>
+
+<script>
+// ===== GAME STATE =====
+const state = {
+  round: 0,
+  scores: [0, 0, 0],
+  timer: null,
+  timeLeft: 0,
+  totalTime: 0,
+  answers2: [null, null, null],
+  answers3: [null, null],
+};
+
+// ===== TASK DATA =====
+const tasks = [
+  { id: 5, client: "Mark (TechFlow BV)", desc: "SPOED: presentatie aanpassen voor meeting om 14:00", deadline: "Vandaag 14:00", tag: "urgent", tagLabel: "URGENT" },
+  { id: 1, client: "Sophie (Bakkerij Zoet)", desc: "Social media post klaarzetten", deadline: "Over 2 uur", tag: "urgent", tagLabel: "URGENT" },
+  { id: 6, client: "Anna (Webshop Bloom)", desc: "Klantvraag beantwoorden via email", deadline: "Vandaag 12:00", tag: "today", tagLabel: "VANDAAG" },
+  { id: 3, client: "Lisa (Yoga Studio Zen)", desc: "Factuur sturen naar klant", deadline: "Vandaag 17:00", tag: "today", tagLabel: "VANDAAG" },
+  { id: 2, client: "Mark (TechFlow BV)", desc: "Maandrapport opmaken", deadline: "Morgen 9:00", tag: "today", tagLabel: "MORGEN" },
+  { id: 8, client: "Anna (Webshop Bloom)", desc: "Retouren verwerken in systeem", deadline: "Morgen", tag: "today", tagLabel: "MORGEN" },
+  { id: 4, client: "Sophie (Bakkerij Zoet)", desc: "Instagram stories plannen voor de week", deadline: "Vrijdag", tag: "week", tagLabel: "DEZE WEEK" },
+  { id: 7, client: "Lisa (Yoga Studio Zen)", desc: "Nieuwsbrief ontwerpen", deadline: "Volgende week", tag: "week", tagLabel: "VOLGENDE WEEK" },
+];
+// Ideal order by id: 5, 1, 6, 3, 2, 8, 4, 7
+const idealOrder = [5, 1, 6, 3, 2, 8, 4, 7];
+
+// Shuffle tasks for initial display
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ===== SCENARIOS =====
+const scenarios2 = [
+  {
+    text: "Mark belt: zijn presentatie MOET nu klaar. Maar je was net begonnen aan Sophie's urgente social media post die over 1 uur live moet.",
+    options: [
+      "Mark's presentatie eerst afmaken — hij belt, dus dat is urgenter",
+      "Sophie's post afmaken — je bent al bezig en er is een harde deadline over 1 uur",
+      "Beide klanten mailen dat het later wordt"
+    ],
+    best: 1
+  },
+  {
+    text: "Anna stuurt een boze email: haar klant wacht al 2 dagen op antwoord. Je had dit over het hoofd gezien.",
+    options: [
+      "Meteen antwoorden en excuses aanbieden aan Anna",
+      "Eerst uitzoeken wat er mis ging voordat je reageert",
+      "Anna's email doorsturen naar de klant"
+    ],
+    best: 0
+  },
+  {
+    text: "Lisa vraagt of je morgen een extra dag kunt werken. Je hebt al afspraken met andere klanten staan.",
+    options: [
+      "Ja zeggen en later je andere afspraken verzetten",
+      "Nee zeggen — je zit vol",
+      "Eerlijk zijn: je hebt al afspraken, maar je kunt kijken wat mogelijk is"
+    ],
+    best: 2
+  }
+];
+
+const scenarios3 = [
+  {
+    text: "Halverwege het maandrapport voor Mark crasht je laptop. Je hebt geen backup. De deadline is over 3 uur. Wat doe je?",
+    options: [
+      "Paniek — bel Mark dat het niet gaat lukken",
+      "Probeer data te herstellen en informeer Mark over mogelijke vertraging",
+      "Begin opnieuw zonder iets te zeggen"
+    ],
+    best: 1
+  },
+  {
+    text: "Een nieuwe potentiële klant stuurt je een bericht op het platform. Je bent druk met bestaande klanten. Hoe reageer je?",
+    options: [
+      "Negeren — je hebt het te druk",
+      "Kort antwoorden dat je deze week geen ruimte hebt maar volgende week wel",
+      "Meteen een kennismakingsgesprek inplannen"
+    ],
+    best: 1
+  }
+];
+
+// ===== SCREEN TRANSITIONS =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('visible');
+    setTimeout(() => s.classList.remove('active'), 400);
+  });
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => el.classList.add('visible'));
+    });
+  }, 300);
+}
+
+function updateProgress(round) {
+  const bar = document.getElementById('progressBar');
+  bar.classList.toggle('visible', round > 0 && round <= 3);
+  for (let i = 1; i <= 3; i++) {
+    const s = document.getElementById('step' + i);
+    s.classList.remove('done', 'current');
+    if (i < round) s.classList.add('done');
+    if (i === round) s.classList.add('current');
+  }
+  document.getElementById('progressLabel').textContent = `Ronde ${round}/3`;
+}
+
+// ===== TIMER =====
+function startTimer(seconds, onEnd) {
+  state.timeLeft = seconds;
+  state.totalTime = seconds;
+  const bar = document.getElementById('timerBar');
+  const display = document.getElementById('timerDisplay');
+  const fill = document.getElementById('timerFill');
+  bar.classList.add('visible');
+  clearInterval(state.timer);
+
+  function tick() {
+    const m = Math.floor(state.timeLeft / 60);
+    const s = state.timeLeft % 60;
+    display.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+    const pct = (state.timeLeft / state.totalTime) * 100;
+    fill.style.width = pct + '%';
+    const warn = state.timeLeft <= 30;
+    display.classList.toggle('warning', warn);
+    fill.classList.toggle('warning', warn);
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      onEnd();
+      return;
+    }
+    state.timeLeft--;
+  }
+  tick();
+  state.timer = setInterval(tick, 1000);
+}
+
+function stopTimer() {
+  clearInterval(state.timer);
+  document.getElementById('timerBar').classList.remove('visible');
+}
+
+function showTimeUp(nextFn) {
+  const overlay = document.getElementById('timeUpOverlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => overlay.classList.add('visible'));
+  document.getElementById('timeUpBtn').onclick = () => {
+    overlay.classList.remove('visible');
+    setTimeout(() => { overlay.style.display = 'none'; nextFn(); }, 300);
+  };
+}
+
+// ===== START GAME =====
+function startGame() {
+  state.round = 1;
+  updateProgress(1);
+  buildRound1();
+  showScreen('screenRound1');
+  startTimer(180, () => showTimeUp(submitRound1));
+}
+
+// ===== RONDE 1: INBOX TRIAGE =====
+let shuffledTasks = [];
+let dragSrcIndex = null;
+
+function buildRound1() {
+  shuffledTasks = shuffle(tasks);
+  renderTasks();
+}
+
+function renderTasks() {
+  const list = document.getElementById('taskList');
+  list.innerHTML = '';
+  shuffledTasks.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className = 'task-card';
+    card.draggable = true;
+    card.dataset.index = i;
+    const tagClass = t.tag === 'urgent' ? 'tag-urgent' : t.tag === 'today' ? 'tag-today' : 'tag-week';
+    card.innerHTML = `
+      <div class="task-rank">${i + 1}</div>
+      <div class="task-grip">&#9776;</div>
+      <div class="task-body">
+        <div class="task-client">${t.client}</div>
+        <div class="task-desc">${t.desc}</div>
+        <div class="task-meta">
+          <span class="task-deadline">&#128337; ${t.deadline}</span>
+          <span class="task-tag ${tagClass}">${t.tagLabel}</span>
+        </div>
+      </div>
+    `;
+    // Drag events
+    card.addEventListener('dragstart', onDragStart);
+    card.addEventListener('dragover', onDragOver);
+    card.addEventListener('dragenter', onDragEnter);
+    card.addEventListener('dragleave', onDragLeave);
+    card.addEventListener('drop', onDrop);
+    card.addEventListener('dragend', onDragEnd);
+    // Touch events
+    card.addEventListener('touchstart', onTouchStart, { passive: false });
+    card.addEventListener('touchmove', onTouchMove, { passive: false });
+    card.addEventListener('touchend', onTouchEnd);
+    list.appendChild(card);
+  });
+}
+
+function onDragStart(e) {
+  dragSrcIndex = +this.dataset.index;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+function onDragEnter(e) { e.preventDefault(); this.classList.add('drag-over'); }
+function onDragLeave() { this.classList.remove('drag-over'); }
+function onDrop(e) {
+  e.preventDefault();
+  this.classList.remove('drag-over');
+  const target = +this.dataset.index;
+  if (dragSrcIndex !== null && dragSrcIndex !== target) {
+    const item = shuffledTasks.splice(dragSrcIndex, 1)[0];
+    shuffledTasks.splice(target, 0, item);
+    renderTasks();
+  }
+}
+function onDragEnd() { document.querySelectorAll('.task-card').forEach(c => c.classList.remove('dragging', 'drag-over')); }
+
+// Touch drag for mobile
+let touchCard = null, touchClone = null, touchStartY = 0, touchIndex = null;
+function onTouchStart(e) {
+  touchCard = this;
+  touchIndex = +this.dataset.index;
+  touchStartY = e.touches[0].clientY;
+  this.classList.add('dragging');
+}
+function onTouchMove(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const cards = document.querySelectorAll('.task-card');
+  cards.forEach(c => c.classList.remove('drag-over'));
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (el) {
+    const card = el.closest('.task-card');
+    if (card && card !== touchCard) card.classList.add('drag-over');
+  }
+}
+function onTouchEnd(e) {
+  touchCard.classList.remove('dragging');
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (el) {
+    const card = el.closest('.task-card');
+    if (card && card !== touchCard) {
+      const target = +card.dataset.index;
+      const item = shuffledTasks.splice(touchIndex, 1)[0];
+      shuffledTasks.splice(target, 0, item);
+      renderTasks();
+    }
+  }
+  document.querySelectorAll('.task-card').forEach(c => c.classList.remove('drag-over'));
+}
+
+function submitRound1() {
+  stopTimer();
+  // Score: Kendall tau distance-based, simplified
+  const userOrder = shuffledTasks.map(t => t.id);
+  let score = 0;
+  for (let i = 0; i < idealOrder.length; i++) {
+    const pos = userOrder.indexOf(idealOrder[i]);
+    const diff = Math.abs(pos - i);
+    if (diff === 0) score += 2;
+    else if (diff === 1) score += 1;
+  }
+  // Max possible: 16, scale to 0-5
+  state.scores[0] = Math.min(5, Math.round((score / 16) * 5));
+  state.round = 2;
+  updateProgress(2);
+  buildScenarios('scenarios2', scenarios2, state.answers2, 'btnRound2');
+  showScreen('screenRound2');
+  startTimer(180, () => showTimeUp(submitRound2));
+}
+
+// ===== SCENARIO BUILDER =====
+function buildScenarios(containerId, data, answersArr, btnId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  data.forEach((s, si) => {
+    const card = document.createElement('div');
+    card.className = 'scenario-card';
+    const letters = ['A', 'B', 'C'];
+    card.innerHTML = `
+      <div class="scenario-num">Scenario ${si + 1}</div>
+      <div class="scenario-text">${s.text}</div>
+      <div class="option-list" id="${containerId}_s${si}">
+        ${s.options.map((o, oi) => `
+          <button class="option-btn" data-scenario="${si}" data-option="${oi}">
+            <span class="option-letter">${letters[oi]}</span>
+            <span>${o}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  // Bind clicks
+  container.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const si = +btn.dataset.scenario;
+      const oi = +btn.dataset.option;
+      answersArr[si] = oi;
+      // Update UI
+      const group = document.getElementById(`${containerId}_s${si}`);
+      group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      // Enable submit if all answered
+      const allAnswered = answersArr.every(a => a !== null);
+      document.getElementById(btnId).disabled = !allAnswered;
+    });
+  });
+}
+
+function scoreScenarios(data, answers) {
+  let pts = 0;
+  answers.forEach((a, i) => {
+    if (a === data[i].best) pts += 2;
+    else if (a !== null) pts += 0;
+  });
+  return pts;
+}
+
+function submitRound2() {
+  stopTimer();
+  const raw = scoreScenarios(scenarios2, state.answers2); // max 6
+  state.scores[1] = Math.min(5, Math.round((raw / 6) * 5));
+  state.round = 3;
+  updateProgress(3);
+  buildScenarios('scenarios3', scenarios3, state.answers3, 'btnRound3');
+  showScreen('screenRound3');
+  startTimer(120, () => showTimeUp(submitRound3));
+}
+
+function submitRound3() {
+  stopTimer();
+  const raw = scoreScenarios(scenarios3, state.answers3); // max 4
+  state.scores[2] = Math.min(5, Math.round((raw / 4) * 5));
+  updateProgress(0);
+  document.getElementById('progressBar').classList.remove('visible');
+  showResults();
+}
+
+// ===== RESULTS =====
+function showResults() {
+  const total = state.scores.reduce((a, b) => a + b, 0); // max 15
+  const roundNames = ['Inbox Triage', 'Conflicten', 'Onverwacht'];
+
+  // Verdict
+  const badge = document.getElementById('verdictBadge');
+  if (total >= 12) {
+    badge.textContent = 'Uitstekend! Je bent klaar voor het platform.';
+    badge.className = 'results-verdict verdict-green';
+  } else if (total >= 8) {
+    badge.textContent = 'Goed! Een paar aandachtspunten.';
+    badge.className = 'results-verdict verdict-yellow';
+  } else {
+    badge.textContent = 'Nog niet helemaal klaar. Probeer het opnieuw.';
+    badge.className = 'results-verdict verdict-red';
+  }
+
+  // Grid
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML = '';
+  state.scores.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    let starsHTML = '';
+    for (let j = 0; j < 5; j++) {
+      starsHTML += `<span class="star" data-delay="${j * 150 + i * 300}" ${j < s ? 'data-fill="1"' : ''}>&#9733;</span>`;
+    }
+    card.innerHTML = `
+      <h4>${roundNames[i]}</h4>
+      <div class="stars">${starsHTML}</div>
+      <div class="score-val">${s}</div>
+      <div class="score-label">van 5 punten</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Feedback detail
+  const detail = document.getElementById('resultsDetail');
+  const feedbackItems = [];
+
+  if (state.scores[0] >= 4) feedbackItems.push({ icon: '&#9989;', text: '<strong>Prioritering:</strong> Je hebt laten zien dat je urgente taken goed kunt herkennen en ordenen.' });
+  else feedbackItems.push({ icon: '&#128161;', text: '<strong>Prioritering:</strong> Let extra op het verschil tussen urgentie en belangrijkheid. Harde deadlines gaan voor.' });
+
+  if (state.scores[1] >= 4) feedbackItems.push({ icon: '&#9989;', text: '<strong>Communicatie:</strong> Uitstekend! Je communiceert eerlijk en professioneel met klanten.' });
+  else feedbackItems.push({ icon: '&#128161;', text: '<strong>Communicatie:</strong> Wees altijd transparant naar klanten. Neem verantwoordelijkheid en denk in oplossingen.' });
+
+  if (state.scores[2] >= 4) feedbackItems.push({ icon: '&#9989;', text: '<strong>Stressbestendigheid:</strong> Je blijft kalm onder druk en handelt professioneel.' });
+  else feedbackItems.push({ icon: '&#128161;', text: '<strong>Stressbestendigheid:</strong> Bij onverwachte situaties is het belangrijk om snel te communiceren en eerlijk te zijn.' });
+
+  detail.innerHTML = `
+    <h3>Bekijk je resultaten</h3>
+    ${feedbackItems.map(f => `
+      <div class="feedback-item">
+        <span class="feedback-icon">${f.icon}</span>
+        <span class="feedback-text">${f.text}</span>
+      </div>
+    `).join('')}
+  `;
+
+  showScreen('screenResults');
+
+  // Animate stars after screen transition
+  setTimeout(() => {
+    document.querySelectorAll('.star[data-fill="1"]').forEach(star => {
+      const delay = +star.dataset.delay;
+      setTimeout(() => {
+        star.classList.add('filled', 'animate');
+      }, delay);
+    });
+  }, 500);
+}
+
+// Init: make intro screen visible on load
+window.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    document.getElementById('screenIntro').classList.add('visible');
+  });
+});
+</script>
+</body>
+</html>

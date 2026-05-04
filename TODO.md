@@ -23,6 +23,7 @@ _Laatst bijgewerkt: 2026-05-04_
 ## Zoeken & Filteren
 - [ ] Zoekbalk met autocomplete
 - [ ] Filteren op categorie, tarief, taal, ervaring
+- [ ] Filteren op flexibiliteit (werktijden), ervaring (aantal opdrachten), uurtarief
 - [ ] Sorteren op rating, prijs, beschikbaarheid
 
 ## Toelatings Assessment (nieuw — Bob)
@@ -65,7 +66,9 @@ _Laatst bijgewerkt: 2026-05-04_
 - [ ] Blog/content
 
 ## Ideeën
-_Voeg hier losse ideeën toe_
+- Game-based assessment uitbreiden met modules per VA-categorie (social media, boekhouding, etc.)
+- Assessment resultaten als badge op profiel tonen
+- Periodieke her-assessment voor kwaliteitsborging
 
 ---
 
